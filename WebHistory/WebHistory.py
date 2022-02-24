@@ -11,8 +11,7 @@ import openpyxl
 debug = False
 
 temp = 'C:\\Users\\' + os.getlogin() + '\\Desktop\\WebHistory\\'
-
-
+ver = '0.1.0'
 
 def date_from_webkit(webkit_timestamp):
     epoch_start = datetime.datetime(1601,1,1)
@@ -64,10 +63,6 @@ def getChromeHistory(u, wb):
             #print('Times Accesed: ' + str(row[3]))
             #print()
             wsC.append({'A':date_from_webkit(row[5]), 'B':urllib.parse.urlparse(row[1]).netloc, 'C':row[2], 'D':row[1], 'E':row[3]})
-            #wsC.append()
-
-
-
     
 def getFirefoxHistory(u, wb):
     dir=temp+'Firefox\\'
@@ -117,7 +112,6 @@ def getFirefoxHistory(u, wb):
             #print()
             wsF.append({'A':date_from_webkit(row[5]), 'B':urllib.parse.urlparse(row[1]).netloc, 'C':row[2], 'D':row[1], 'E':row[3]})
         
-
 def getEdgeHistory(u, wb):
     dir=temp+'Edge\\'
     if os.listdir(dir):
@@ -165,7 +159,6 @@ def getEdgeHistory(u, wb):
 
 DELETE_ERROR_MSG = 'Cannot delete file. Make sure your have enough credentials to delete this file or that no other process is using this file.'
 
-
 def main():
     if platform.system() != "Windows":
         print(platform.system())
@@ -177,17 +170,20 @@ def main():
     wb = openpyxl.Workbook()
     ws1 = wb.active
     ws1.title = "Test"
-
-    parser = argparse.ArgumentParser(description='Doin\' a thing.')
-    parser.add_argument('--username', type=str, required=True, help='doin another thing')
-    parser.add_argument('--browser', choices=['Edge', 'Chrome', 'Firefox', 'All'], default='All')
+    
+    #command line parser
+    parser = argparse.ArgumentParser(description='Doin\' a thing.', prog='WebHistory')
+    parser.add_argument('-u', '--username', type=str, required=True, help='doin another thing')
+    parser.add_argument('--browser', '-b', choices=['Edge', 'Chrome', 'Firefox', 'All'], default='All')
+    parser.add_argument('--version','-v', action='version',version='%(prog)s '+ ver, help='Displays software version')
+    
     try:
         if debug:
-            args = parser.parse_args([''])
+            args = parser.parse_args(['-v'])
         else:
             args = parser.parse_args()
     except Exception as e:
-        args = parser.parse_args('-h')
+        #args = parser.parse_args('-h')
         print(e)
         return 0
     os.makedirs(temp, exist_ok=True)
@@ -214,8 +210,8 @@ def main():
         print(e)
         return 0
 
-
-    if args.browser:
+    #main decision tree
+    if args.browser: 
         if args.browser == 'Chrome' or args.browser == 'All':
             try: 
                 print('Checking for leftover files from previous run')
