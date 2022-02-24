@@ -1,6 +1,4 @@
 import sqlite3
-#import csv
-#import sys
 import argparse
 import shutil
 import datetime
@@ -30,7 +28,6 @@ def getChromeHistory(u, wb):
         print('empty')
 
     print('Getting Chrome browser history from:', u)
-    #dst='C:\\Users\\meubank_stu\\AppData\\Local\\Temp\\test\\Chrome.sqlite'
 
     chromeHistoryFiles = []
     chromeHistoryFiles.append('C:\\Users\\' + u + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History')
@@ -266,14 +263,6 @@ def main():
         print()
         print('Complete!')
         print('See ' +  temp + 'WebHistory.xlsx for data')
-
-#    timestamp = 13289689984748372
-#    print(date_from_webkit(timestamp))
-
-
-    
-        
-
 
     
 if __name__ == "__main__":
